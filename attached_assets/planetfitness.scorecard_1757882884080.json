@@ -1,0 +1,51 @@
+{
+  "merchantId": "planetfitness",
+  "displayName": "Planet Fitness",
+  "category": "Gym & Wellness",
+  "period": {
+    "last30": {
+      "winRate": 0.74,
+      "medianTimeMinutes": 162,
+      "volume": 103
+    },
+    "last90": {
+      "winRate": 0.76,
+      "medianTimeMinutes": 155,
+      "volume": 304
+    }
+  },
+  "metrics": {
+    "successByChannel": {
+      "portal": 0.0,
+      "email": 0.27,
+      "chat": 0.0,
+      "phone": 0.52,
+      "letter": 0.41
+    },
+    "escalationRate": 0.58,
+    "refundRate": 0.05,
+    "evidenceCompletenessPct": 0.88
+  },
+  "frictionFlags": [
+    "in-person or certified letter often required",
+    "30-day notice windows"
+  ],
+  "channels": [
+    "phone",
+    "letter"
+  ],
+  "difficulty": 5,
+  "evidenceBadges": [
+    "Recorded Call",
+    "Certified Mail"
+  ],
+  "howWeCancel": [
+    "Phone call to local club for account termination request",
+    "Mail certified cancellation letter with membership details",
+    "Track delivery and verify next billing cycle"
+  ],
+  "recentUpdates": [
+    "2025-06-28: several clubs updated mailing address requirements"
+  ],
+  "notes": "Always prepare letter on first attempt; verify contract term & notice window."
+}

@@ -1,0 +1,53 @@
+{
+  "merchantId": "comcast.xfinity",
+  "displayName": "Xfinity (Comcast)",
+  "category": "Telecom",
+  "period": {
+    "last30": {
+      "winRate": 0.81,
+      "medianTimeMinutes": 67,
+      "volume": 169
+    },
+    "last90": {
+      "winRate": 0.79,
+      "medianTimeMinutes": 72,
+      "volume": 492
+    }
+  },
+  "metrics": {
+    "successByChannel": {
+      "portal": 0.22,
+      "email": 0.18,
+      "chat": 0.44,
+      "phone": 0.63,
+      "letter": 0.08
+    },
+    "escalationRate": 0.36,
+    "refundRate": 0.03,
+    "evidenceCompletenessPct": 0.91
+  },
+  "frictionFlags": [
+    "phone-only reps for cancellations",
+    "retention upsell scripts",
+    "address verification"
+  ],
+  "channels": [
+    "chat",
+    "phone",
+    "letter"
+  ],
+  "difficulty": 4,
+  "evidenceBadges": [
+    "Recorded Call",
+    "Portal Proof"
+  ],
+  "howWeCancel": [
+    "Attempt chat; if retention transfers, escalate to phone agent",
+    "Capture confirmation ID during call",
+    "Follow with certified letter if billing persists"
+  ],
+  "recentUpdates": [
+    "2025-07-12: chat queue time increased; prioritize phone during peak hours"
+  ],
+  "notes": "Enable voice by default; ensure user consent for recorded calls."
+}

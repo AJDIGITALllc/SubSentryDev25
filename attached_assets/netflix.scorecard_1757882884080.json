@@ -1,0 +1,53 @@
+{
+  "merchantId": "com.netflix",
+  "displayName": "Netflix",
+  "category": "Streaming",
+  "period": {
+    "last30": {
+      "winRate": 0.95,
+      "medianTimeMinutes": 14,
+      "volume": 412
+    },
+    "last90": {
+      "winRate": 0.94,
+      "medianTimeMinutes": 15,
+      "volume": 1188
+    }
+  },
+  "metrics": {
+    "successByChannel": {
+      "portal": 0.92,
+      "email": 0.82,
+      "chat": 0.0,
+      "phone": 0.12,
+      "letter": 0.0
+    },
+    "escalationRate": 0.07,
+    "refundRate": 0.01,
+    "evidenceCompletenessPct": 0.98
+  },
+  "frictionFlags": [
+    "hidden link risk: low",
+    "otp sometimes required"
+  ],
+  "channels": [
+    "portal",
+    "email",
+    "phone"
+  ],
+  "difficulty": 1,
+  "evidenceBadges": [
+    "Portal Proof",
+    "Email Receipt"
+  ],
+  "howWeCancel": [
+    "Login to portal",
+    "Navigate to membership settings",
+    "Trigger cancel flow and capture confirmation",
+    "Email follow-up for receipt if not auto-issued"
+  ],
+  "recentUpdates": [
+    "2025-08-03: confirmation text changed in UI"
+  ],
+  "notes": "Start with portal; fallback to email only if receipt not issued."
+}

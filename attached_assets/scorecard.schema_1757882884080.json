@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MerchantScorecard",
+  "type": "object",
+  "required": [
+    "merchantId",
+    "displayName",
+    "category",
+    "period",
+    "metrics",
+    "frictionFlags",
+    "channels",
+    "difficulty",
+    "evidenceBadges",
+    "notes"
+  ],
+  "properties": {
+    "merchantId": {
+      "type": "string"
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "period": {
+      "type": "object",
+      "properties": {
+        "last30": {
+          "type": "object",
+          "properties": {
+            "winRate": {
+              "type": "number"
+            },
+            "medianTimeMinutes": {
+              "type": "number"
+            },
+            "volume": {
+              "type": "integer"
+            }
+          }
+        },
+        "last90": {
+          "type": "object",
+          "properties": {
+            "winRate": {
+              "type": "number"
+            },
+            "medianTimeMinutes": {
+              "type": "number"
+            },
+            "volume": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "successByChannel": {
+          "type": "object"
+        },
+        "escalationRate": {
+          "type": "number"
+        },
+        "refundRate": {
+          "type": "number"
+        },
+        "evidenceCompletenessPct": {
+          "type": "number"
+        }
+      }
+    },
+    "frictionFlags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "evidenceBadges": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "howWeCancel": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recentUpdates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
