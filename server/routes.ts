@@ -1,4 +1,5 @@
 import type { Express } from "express";
+import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
@@ -14,11 +15,20 @@ if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
 }
 
+// Stripe webhook secret - required in production, optional in development
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+if (!webhookSecret && process.env.NODE_ENV === 'production') {
+  throw new Error('Missing required Stripe webhook signing secret: STRIPE_WEBHOOK_SECRET');
+}
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2023-10-16",
+  apiVersion: "2025-08-27.basil",
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Raw body middleware for Stripe webhooks (must be before JSON parsing)
+  app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }));
+
   // Auth middleware
   await setupAuth(app);
 
@@ -251,28 +261,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Webhook for payment confirmation (simplified)
+  // Stripe webhook with proper signature verification
   app.post('/api/webhooks/stripe', async (req, res) => {
+    const sig = req.headers['stripe-signature'] as string;
+    
+    let event: Stripe.Event;
+    
+    if (webhookSecret) {
+      // Production: Verify webhook signature using raw body
+      try {
+        event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+        console.log('Webhook signature verified successfully');
+      } catch (err: any) {
+        console.error(`Webhook signature verification failed: ${err.message}`);
+        return res.status(400).json({ error: `Webhook signature verification failed: ${err.message}` });
+      }
+    } else {
+      // Development fallback: Parse body directly but log security warning
+      console.warn('WARNING: Webhook signature verification disabled in development. This is insecure for production use.');
+      try {
+        event = JSON.parse(req.body.toString());
+      } catch (err: any) {
+        console.error(`Failed to parse webhook body: ${err.message}`);
+        return res.status(400).json({ error: 'Invalid webhook body format' });
+      }
+    }
+    
     try {
-      // In production, verify webhook signature
-      const event = req.body;
-      
+      // Handle the event securely
       if (event.type === 'payment_intent.succeeded') {
-        const paymentIntent = event.data.object;
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
         const { userId, taskId } = paymentIntent.metadata;
         
-        // Update invoice status
+        // Additional security: Re-fetch the PaymentIntent from Stripe
+        // This ensures we're working with authentic data from Stripe's servers
+        const verifiedPaymentIntent = await stripe.paymentIntents.retrieve(paymentIntent.id);
+        
+        if (verifiedPaymentIntent.status !== 'succeeded') {
+          console.error(`PaymentIntent ${paymentIntent.id} verification failed: status is ${verifiedPaymentIntent.status}`);
+          return res.status(400).json({ error: 'PaymentIntent verification failed' });
+        }
+        
+        // Validate that we have the required metadata
+        if (!userId) {
+          console.error(`PaymentIntent ${paymentIntent.id} missing userId in metadata`);
+          return res.status(400).json({ error: 'Missing userId in PaymentIntent metadata' });
+        }
+        
+        // Update invoice status securely
         const invoices = await storage.getUserInvoices(userId);
         const invoice = invoices.find(inv => inv.stripePaymentIntentId === paymentIntent.id);
         
         if (invoice) {
-          await storage.updateInvoiceStatus(invoice.id, 'paid');
+          // Only update if the invoice is currently pending
+          if (invoice.status === 'pending') {
+            await storage.updateInvoiceStatus(invoice.id, 'paid');
+            console.log(`Invoice ${invoice.id} marked as paid for PaymentIntent ${paymentIntent.id}`);
+          } else {
+            console.warn(`Invoice ${invoice.id} already processed with status: ${invoice.status}`);
+          }
+        } else {
+          console.error(`No invoice found for PaymentIntent ${paymentIntent.id} and userId ${userId}`);
+          return res.status(404).json({ error: 'Invoice not found' });
         }
       }
       
       res.json({ received: true });
     } catch (error) {
-      console.error("Webhook error:", error);
+      console.error("Webhook processing error:", error);
       res.status(500).json({ message: "Webhook processing failed" });
     }
   });

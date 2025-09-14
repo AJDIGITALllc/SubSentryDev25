@@ -21,7 +21,18 @@ export default function Dashboard() {
   const { toast } = useToast();
   const { isAuthenticated, isLoading } = useAuth();
 
-  const { data: dashboardData, isLoading: isDashboardLoading, error } = useQuery({
+  interface DashboardData {
+    stats: {
+      activeSubscriptions: number;
+      cancelledThisMonth: number;
+      activeAITasks: number;
+    };
+    subscriptions: any[];
+    activeTasks: any[];
+    recentEvidence: any[];
+  }
+
+  const { data: dashboardData, isLoading: isDashboardLoading, error } = useQuery<DashboardData>({
     queryKey: ["/api/dashboard"],
     retry: false,
   });
@@ -69,7 +80,7 @@ export default function Dashboard() {
     return null;
   }
 
-  const stats = dashboardData?.stats || {};
+  const stats = dashboardData?.stats || { activeSubscriptions: 0, cancelledThisMonth: 0, activeAITasks: 0 };
   const subscriptions = dashboardData?.subscriptions || [];
   const activeTasks = dashboardData?.activeTasks || [];
   const recentEvidence = dashboardData?.recentEvidence || [];
@@ -83,7 +94,7 @@ export default function Dashboard() {
       billingCycle: "monthly",
       nextBillingDate: "2024-02-15",
       status: "active",
-      merchant: { displayName: "Netflix", category: "Streaming", logoUrl: null }
+      merchant: { displayName: "Netflix", category: "Streaming", logoUrl: undefined }
     },
     {
       id: "2", 
@@ -92,7 +103,7 @@ export default function Dashboard() {
       billingCycle: "monthly", 
       nextBillingDate: "2024-02-08",
       status: "active",
-      merchant: { displayName: "Planet Fitness", category: "Gym & Wellness", logoUrl: null }
+      merchant: { displayName: "Planet Fitness", category: "Gym & Wellness", logoUrl: undefined }
     },
     {
       id: "3",
@@ -101,7 +112,7 @@ export default function Dashboard() {
       billingCycle: "monthly",
       nextBillingDate: "2024-02-08",
       status: "active",
-      merchant: { displayName: "Xfinity", category: "Telecom", logoUrl: null }
+      merchant: { displayName: "Xfinity", category: "Telecom", logoUrl: undefined }
     },
     {
       id: "4",
@@ -110,7 +121,7 @@ export default function Dashboard() {
       billingCycle: "monthly",
       nextBillingDate: "2024-02-20", 
       status: "active",
-      merchant: { displayName: "Spotify Premium", category: "Music", logoUrl: null }
+      merchant: { displayName: "Spotify Premium", category: "Music", logoUrl: undefined }
     },
     {
       id: "5",
@@ -119,7 +130,7 @@ export default function Dashboard() {
       billingCycle: "annual",
       nextBillingDate: "2024-12-15",
       status: "active", 
-      merchant: { displayName: "Adobe Creative Cloud", category: "Design Software", logoUrl: null }
+      merchant: { displayName: "Adobe Creative Cloud", category: "Design Software", logoUrl: undefined }
     },
     {
       id: "6",
@@ -128,7 +139,7 @@ export default function Dashboard() {
       billingCycle: "monthly",
       nextBillingDate: "2024-08-15",
       status: "active",
-      merchant: { displayName: "24 Hour Fitness", category: "Gym & Wellness", logoUrl: null }
+      merchant: { displayName: "24 Hour Fitness", category: "Gym & Wellness", logoUrl: undefined }
     }
   ];
 
