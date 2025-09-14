@@ -47,8 +47,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       
-      const [subscriptions, activeTasks, recentEvidence, invoices] = await Promise.all([
-        storage.getUserSubscriptions(userId),
+      // Check if user has any subscriptions, if not create sample ones
+      let subscriptions = await storage.getUserSubscriptions(userId);
+      
+      if (subscriptions.length === 0) {
+        // Create sample subscriptions for new users
+        const sampleSubscriptions = [
+          {
+            userId,
+            subscriptionName: "Netflix",
+            amount: "15.99",
+            currency: "USD",
+            billingCycle: "monthly",
+            nextBillingDate: new Date("2024-02-15"),
+            status: "active",
+            detectionSource: "demo"
+          },
+          {
+            userId,
+            subscriptionName: "Planet Fitness",
+            amount: "24.99",
+            currency: "USD",
+            billingCycle: "monthly",
+            nextBillingDate: new Date("2024-02-08"),
+            status: "active",
+            detectionSource: "demo"
+          },
+          {
+            userId,
+            subscriptionName: "Xfinity",
+            amount: "89.99",
+            currency: "USD",
+            billingCycle: "monthly",
+            nextBillingDate: new Date("2024-02-08"),
+            status: "active",
+            detectionSource: "demo"
+          },
+          {
+            userId,
+            subscriptionName: "Spotify Premium",
+            amount: "9.99",
+            currency: "USD",
+            billingCycle: "monthly",
+            nextBillingDate: new Date("2024-02-20"),
+            status: "active",
+            detectionSource: "demo"
+          },
+          {
+            userId,
+            subscriptionName: "Adobe Creative Cloud",
+            amount: "599.88",
+            currency: "USD",
+            billingCycle: "annual",
+            nextBillingDate: new Date("2024-12-15"),
+            status: "active",
+            detectionSource: "demo"
+          },
+          {
+            userId,
+            subscriptionName: "24 Hour Fitness",
+            amount: "49.99",
+            currency: "USD",
+            billingCycle: "monthly",
+            nextBillingDate: new Date("2024-08-15"),
+            status: "active",
+            detectionSource: "demo"
+          }
+        ];
+
+        // Create subscriptions in parallel
+        subscriptions = await Promise.all(
+          sampleSubscriptions.map(sub => storage.createSubscription(sub))
+        );
+      }
+      
+      const [activeTasks, recentEvidence, invoices] = await Promise.all([
         storage.getActiveCancellationTasks(userId),
         storage.getUserCancellationTasks(userId).then(tasks => 
           Promise.all(tasks.slice(0, 3).map(task => storage.getTaskEvidence(task.id)))
@@ -256,6 +329,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ clientSecret: paymentIntent.client_secret });
     } catch (error: any) {
       res.status(500).json({ message: "Error creating payment intent: " + error.message });
+    }
+  });
+
+  // Download receipt endpoint
+  app.get('/api/download-receipt', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      const invoices = await storage.getUserInvoices(userId);
+      
+      // Generate a simple receipt text file
+      const receiptContent = `
+SUBSENTRY - RECEIPT
+==================
+User: ${user?.email || 'Unknown'}
+Date: ${new Date().toISOString().split('T')[0]}
+
+RECENT TRANSACTIONS
+==================
+${invoices.map(invoice => 
+  `${invoice.description || 'Task fee'} - $${invoice.amount} (${invoice.status})`
+).join('\n')}
+
+Total Paid: $${invoices.filter(i => i.status === 'paid').reduce((sum, i) => sum + parseFloat(i.amount), 0).toFixed(2)}
+
+Thank you for using Subsentry!
+      `.trim();
+
+      res.setHeader('Content-Disposition', 'attachment; filename="subsentry-receipt.txt"');
+      res.setHeader('Content-Type', 'text/plain');
+      res.send(receiptContent);
+    } catch (error) {
+      console.error("Error generating receipt:", error);
+      res.status(500).json({ message: "Failed to generate receipt" });
     }
   });
 

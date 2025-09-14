@@ -1,0 +1,113 @@
+Perfect — here’s a hero-ready landing page block for Subsentry’s Methodology + Pricing section. You can drop this straight into Firebase/Next.js (with Tailwind or shadcn/ui), or hand it off to design in Canva.
+
+⸻
+
+✨ Landing Page Block: Methodology + Pricing
+
+// Methodology + Pricing Section (Next.js + Tailwind)
+// Place inside /components/MethodologyPricing.tsx
+
+import React from "react";
+
+export default function MethodologyPricing() {
+  return (
+    <section className="bg-white py-20">
+      <div className="max-w-5xl mx-auto px-6 space-y-16">
+        {/* Methodology */}
+        <div className="text-center space-y-6">
+          <h2 className="text-3xl font-extrabold text-gray-900">
+            ⚡ How Subsentry Works
+          </h2>
+          <p className="text-lg text-gray-600">
+            Cancel anything. Automatically. With proof.
+          </p>
+
+          <div className="grid md:grid-cols-4 gap-8 mt-12">
+            {[
+              { step: "1. Detect", text: "Connect your bank and email. We scan for recurring charges and normalize merchants." },
+              { step: "2. Assign Agent", text: "We deploy a specialized agent trained for your service type (StreamBot, GymTerminator, TelecomNinja)." },
+              { step: "3. Execute", text: "Our agents attempt portal → email → chat → phone → certified letter until success." },
+              { step: "4. Prove", text: "You get dual-artifact proof: screenshot + receipt or transcript, notarized in your vault." },
+            ].map((s, i) => (
+              <div key={i} className="bg-gray-50 rounded-lg p-6 shadow-sm hover:shadow-md transition">
+                <h3 className="font-semibold text-xl text-indigo-600">{s.step}</h3>
+                <p className="mt-2 text-sm text-gray-700">{s.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Pricing */}
+        <div className="text-center space-y-6">
+          <h2 className="text-3xl font-extrabold text-gray-900">💵 Transparent Pricing</h2>
+          <p className="text-lg text-gray-600">
+            Simple, fair, and guaranteed. Pay only when you get proof.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-8 mt-12">
+            {/* Pay as you go */}
+            <div className="bg-gray-50 rounded-lg p-8 shadow-sm">
+              <h3 className="text-xl font-semibold">Pay-As-You-Go</h3>
+              <ul className="mt-4 space-y-2 text-gray-700 text-sm">
+                <li>✅ Simple cancels: <b>$5–8/task</b></li>
+                <li>✅ Complex cancels: <b>$10–15/task</b></li>
+                <li>✅ Bill negotiations: <b>$20 + 10% savings</b></li>
+                <li>✅ Subscription audit: <b>$25 one-time</b></li>
+              </ul>
+            </div>
+
+            {/* AgentPass */}
+            <div className="bg-yellow-50 rounded-lg p-8 shadow-md border-2 border-yellow-400">
+              <h3 className="text-xl font-semibold">⭐ AgentPass</h3>
+              <ul className="mt-4 space-y-2 text-gray-700 text-sm">
+                <li>🎟 $10/month subscription</li>
+                <li>🎟 Includes <b>3 cancels/month</b></li>
+                <li>🎟 Priority queue access</li>
+                <li>🎟 10% discount on extras</li>
+                <li>🎟 Unused cancels roll over (max 6)</li>
+              </ul>
+            </div>
+
+            {/* Promise */}
+            <div className="bg-gray-50 rounded-lg p-8 shadow-sm">
+              <h3 className="text-xl font-semibold">Our Promise</h3>
+              <ul className="mt-4 space-y-2 text-gray-700 text-sm">
+                <li>🔒 No hidden fees</li>
+                <li>💸 Refund guarantee if fail</li>
+                <li>📜 Proof guarantee (dual-artifact)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+⸻
+
+🔑 Notes for Firebase/Next.js Integration
+	•	Drop this component into your components/ folder.
+	•	Import it on your landing page:
+
+import MethodologyPricing from "@/components/MethodologyPricing";
+
+export default function HomePage() {
+  return (
+    <>
+      {/* Hero section */}
+      <MethodologyPricing />
+      {/* Footer */}
+    </>
+  );
+}
+
+
+	•	Style built with TailwindCSS (fits shadcn/ui ecosystem).
+
+⸻
+
+⚡ This will give your landing page a clean, trust-building block showing how it works + exact costs side by side.
+
+👉 Want me to also design the Hero section (top of page) with tagline + CTA, so the Methodology/Pricing flow right underneath feels like a natural story?

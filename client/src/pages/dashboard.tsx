@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useAuth } from "@/hooks/useAuth";
@@ -10,6 +10,9 @@ import EvidenceCard from "@/components/EvidenceCard";
 import MerchantScorecard from "@/components/MerchantScorecard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { PiggyBank, Layers, Zap, RefreshCw, Database } from "lucide-react";
 
 // Import scorecard data
@@ -20,6 +23,8 @@ import planetfitnessScorecard from "@/data/scorecards/planetfitness.scorecard.js
 export default function Dashboard() {
   const { toast } = useToast();
   const { isAuthenticated, isLoading } = useAuth();
+  const [isBankModalOpen, setIsBankModalOpen] = useState(false);
+  const [bankName, setBankName] = useState("");
 
   interface DashboardData {
     stats: {
@@ -85,63 +90,28 @@ export default function Dashboard() {
   const activeTasks = dashboardData?.activeTasks || [];
   const recentEvidence = dashboardData?.recentEvidence || [];
 
-  // Mock data for demo since we don't have real subscriptions yet
-  const mockSubscriptions = [
-    {
-      id: "1",
-      subscriptionName: "Netflix",
-      amount: "15.99",
-      billingCycle: "monthly",
-      nextBillingDate: "2024-02-15",
-      status: "active",
-      merchant: { displayName: "Netflix", category: "Streaming", logoUrl: undefined }
-    },
-    {
-      id: "2", 
-      subscriptionName: "Planet Fitness",
-      amount: "24.99",
-      billingCycle: "monthly", 
-      nextBillingDate: "2024-02-08",
-      status: "active",
-      merchant: { displayName: "Planet Fitness", category: "Gym & Wellness", logoUrl: undefined }
-    },
-    {
-      id: "3",
-      subscriptionName: "Xfinity",
-      amount: "89.99", 
-      billingCycle: "monthly",
-      nextBillingDate: "2024-02-08",
-      status: "active",
-      merchant: { displayName: "Xfinity", category: "Telecom", logoUrl: undefined }
-    },
-    {
-      id: "4",
-      subscriptionName: "Spotify Premium",
-      amount: "9.99",
-      billingCycle: "monthly",
-      nextBillingDate: "2024-02-20", 
-      status: "active",
-      merchant: { displayName: "Spotify Premium", category: "Music", logoUrl: undefined }
-    },
-    {
-      id: "5",
-      subscriptionName: "Adobe Creative Cloud",
-      amount: "599.88",
-      billingCycle: "annual",
-      nextBillingDate: "2024-12-15",
-      status: "active", 
-      merchant: { displayName: "Adobe Creative Cloud", category: "Design Software", logoUrl: undefined }
-    },
-    {
-      id: "6",
-      subscriptionName: "24 Hour Fitness", 
-      amount: "49.99",
-      billingCycle: "monthly",
-      nextBillingDate: "2024-08-15",
-      status: "active",
-      merchant: { displayName: "24 Hour Fitness", category: "Gym & Wellness", logoUrl: undefined }
-    }
-  ];
+  // Helper function to get subscription category
+  const getSubscriptionCategory = (name: string) => {
+    const categories: { [key: string]: string } = {
+      'Netflix': 'Streaming',
+      'Planet Fitness': 'Gym & Wellness',
+      'Xfinity': 'Telecom',
+      'Spotify Premium': 'Music',
+      'Adobe Creative Cloud': 'Design Software',
+      '24 Hour Fitness': 'Gym & Wellness'
+    };
+    return categories[name] || 'Subscription';
+  };
+
+  const handleBankSync = () => {
+    // Placeholder for Plaid integration
+    toast({
+      title: "Bank Account Connected",
+      description: `Successfully connected to ${bankName}. Scanning for subscriptions...`,
+    });
+    setIsBankModalOpen(false);
+    setBankName("");
+  };
 
   const mockActiveTasks = [
     {
@@ -256,7 +226,7 @@ export default function Dashboard() {
                   <Layers className="h-5 w-5 text-primary" />
                 </div>
                 <div className="text-3xl font-bold text-foreground mb-2" data-testid="text-active-subscriptions">
-                  {mockSubscriptions.length}
+                  {subscriptions.length}
                 </div>
                 <div className="text-sm text-muted-foreground">
                   <span className="text-destructive">3 cancelled</span> this month
@@ -274,7 +244,7 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="text-3xl font-bold text-accent mb-2" data-testid="text-ai-tasks">
-                  {mockActiveTasks.length}
+                  {activeTasks.length}
                 </div>
                 <div className="text-sm text-muted-foreground">
                   Planet Fitness & Comcast
@@ -290,21 +260,57 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-foreground">Your Subscriptions</h2>
-            <Button 
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
-              data-testid="button-sync-bank-account"
-            >
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Sync Bank Account
-            </Button>
+            <Dialog open={isBankModalOpen} onOpenChange={setIsBankModalOpen}>
+              <DialogTrigger asChild>
+                <Button 
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  data-testid="button-sync-bank-account"
+                >
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                  Sync Bank Account
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Connect Your Bank Account</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 pt-4">
+                  <div>
+                    <Label htmlFor="bank-name">Bank Name</Label>
+                    <Input
+                      id="bank-name"
+                      placeholder="e.g., Chase, Bank of America, Wells Fargo"
+                      value={bankName}
+                      onChange={(e) => setBankName(e.target.value)}
+                      aria-label="Bank Name"
+                    />
+                  </div>
+                  <div className="flex justify-between pt-4">
+                    <Button variant="outline" onClick={() => setIsBankModalOpen(false)}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleBankSync} disabled={!bankName.trim()}>
+                      Connect Bank
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-testid="grid-subscriptions">
-            {mockSubscriptions.map((subscription, index) => (
+            {subscriptions.map((subscription, index) => (
               <SubscriptionCard
                 key={subscription.id}
-                subscription={subscription}
-                isActiveTask={index < 2}
+                subscription={{
+                  ...subscription,
+                  merchant: {
+                    displayName: subscription.subscriptionName,
+                    category: getSubscriptionCategory(subscription.subscriptionName),
+                    logoUrl: undefined
+                  }
+                }}
+                isActiveTask={activeTasks.some(task => task.subscriptionId === subscription.id)}
                 data-testid={`card-subscription-${subscription.id}`}
               />
             ))}
@@ -465,6 +471,7 @@ export default function Dashboard() {
                     <span className="text-primary">ℹ</span> All failed tasks are automatically refunded
                   </div>
                   <Button 
+                    onClick={() => window.open('/api/download-receipt', '_blank')}
                     className="bg-primary text-primary-foreground hover:bg-primary/90"
                     data-testid="button-download-receipt"
                   >

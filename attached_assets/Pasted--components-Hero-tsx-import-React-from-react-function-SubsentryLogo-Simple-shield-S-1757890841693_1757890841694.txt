@@ -1,0 +1,96 @@
+// components/Hero.tsx
+import React from "react";
+
+function SubsentryLogo() {
+  // Simple shield + S + bolt placeholder (swap with your SVG)
+  return (
+    <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <linearGradient id="g" x1="0" x2="1">
+          <stop offset="0%" stopColor="#1C4E80" />
+          <stop offset="100%" stopColor="#FFD447" />
+        </linearGradient>
+      </defs>
+      <path d="M32 6l20 8v14c0 13-9.2 24.9-20 30-10.8-5.1-20-17-20-30V14l20-8z" fill="url(#g)" />
+      <path d="M26 40l8-14h-8l12-12-6 12h8L26 52z" fill="#111111" opacity=".85"/>
+    </svg>
+  );
+}
+
+export default function Hero() {
+  return (
+    <section className="relative overflow-hidden">
+      {/* background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0E2C4A] via-[#102A3D] to-[#0A1C2B]" />
+      <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full blur-3xl opacity-30"
+           style={{ background: "radial-gradient(circle, #FFD447 0%, rgba(255,212,71,0) 60%)" }} />
+      <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full blur-3xl opacity-20"
+           style={{ background: "radial-gradient(circle, #3BB273 0%, rgba(59,178,115,0) 60%)" }} />
+
+      <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-16 text-center text-white">
+        <div className="flex items-center justify-center gap-3">
+          <SubsentryLogo />
+          <span className="text-xl font-semibold tracking-wide">Subsentry</span>
+        </div>
+
+        <h1 className="mt-6 text-4xl md:text-6xl font-extrabold leading-tight">
+          Your <span className="text-[#FFD447]">subscription’s kryptonite</span>.
+        </h1>
+        <p className="mt-4 md:mt-6 text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
+          Cancel anything. Automatically. With <span className="text-[#3BB273] font-semibold">proof</span>.
+          Our AI agents fight dark patterns so you don’t wait on hold—ever.
+        </p>
+
+        {/* CTA row */}
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="#get-started"
+            className="inline-flex items-center justify-center rounded-lg px-6 py-3 text-base font-semibold
+                       bg-[#FFD447] text-[#111111] hover:brightness-95 transition shadow"
+          >
+            Get Started — It’s Free
+          </a>
+          <a
+            href="#how-it-works"
+            className="inline-flex items-center justify-center rounded-lg px-6 py-3 text-base font-semibold
+                       border border-white/30 text-white hover:bg-white/10 transition"
+          >
+            See How It Works
+          </a>
+        </div>
+
+        {/* trust bullets */}
+        <div className="mt-6 flex flex-col md:flex-row items-center justify-center gap-4 text-white/70 text-sm">
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#3BB273]" />
+            No hidden fees
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#3BB273]" />
+            Refund guarantee on failures
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#3BB273]" />
+            Dual-artifact proof (screenshot + receipt)
+          </div>
+        </div>
+
+        {/* proof strip */}
+        <div className="mt-10 mx-auto max-w-3xl rounded-xl border border-white/10 bg-white/5 backdrop-blur p-4 text-left">
+          <p className="text-sm text-white/80">
+            <span className="font-semibold text-white">Latest win:</span> Canceled <span className="text-[#FFD447]">Xfinity</span> in 42 minutes —
+            confirmation ID logged, portal screenshot saved.
+          </p>
+        </div>
+      </div>
+
+      {/* divider to next section */}
+      <div className="relative">
+        <svg className="w-full h-12 text-white" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h1440v80H0z" fill="#fff"/>
+          <path d="M0 0h1440v40c-240 40-480 40-720 0S240 0 0 40V0z" fill="#fff"/>
+        </svg>
+      </div>
+    </section>
+  );
+}

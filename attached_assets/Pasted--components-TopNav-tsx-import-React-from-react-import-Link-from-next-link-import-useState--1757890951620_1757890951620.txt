@@ -1,0 +1,99 @@
+// components/TopNav.tsx
+import React from "react";
+import Link from "next/link";
+import { useState } from "react";
+
+function Logo() {
+  return (
+    <div className="flex items-center gap-2">
+      <svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1">
+            <stop offset="0%" stopColor="#1C4E80" />
+            <stop offset="100%" stopColor="#FFD447" />
+          </linearGradient>
+        </defs>
+        <path d="M32 6l20 8v14c0 13-9.2 24.9-20 30-10.8-5.1-20-17-20-30V14l20-8z" fill="url(#g)" />
+        <path d="M26 40l8-14h-8l12-12-6 12h8L26 52z" fill="#111111" opacity=".85"/>
+      </svg>
+      <span className="font-semibold tracking-wide">Subsentry</span>
+    </div>
+  );
+}
+
+export default function TopNav() {
+  const [open, setOpen] = useState(false);
+
+  const items = [
+    { href: "#how-it-works", label: "How it Works" },
+    { href: "#pricing", label: "Pricing" },
+    { href: "#scorecards", label: "Scorecards" },
+    { href: "#partners", label: "Partners" },
+  ];
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0E2C4A]/90 backdrop-blur supports-[backdrop-filter]:bg-[#0E2C4A]/60 text-white">
+      <nav className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2">
+          <Logo />
+        </Link>
+
+        {/* Desktop */}
+        <ul className="hidden md:flex items-center gap-6 text-sm">
+          {items.map((it) => (
+            <li key={it.href}>
+              <a href={it.href} className="opacity-80 hover:opacity-100 transition">
+                {it.label}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a
+              href="#get-started"
+              className="inline-flex items-center rounded-lg px-4 py-2 font-semibold bg-[#FFD447] text-[#111111] hover:brightness-95 transition shadow"
+            >
+              Get Started
+            </a>
+          </li>
+        </ul>
+
+        {/* Mobile toggle */}
+        <button
+          className="md:hidden inline-flex items-center justify-center rounded-lg px-3 py-2 border border-white/30"
+          onClick={() => setOpen(!open)}
+          aria-label="Toggle menu"
+        >
+          ☰
+        </button>
+      </nav>
+
+      {/* Mobile menu */}
+      {open && (
+        <div className="md:hidden border-t border-white/10 bg-[#0E2C4A]">
+          <ul className="max-w-6xl mx-auto px-4 py-3 grid gap-3 text-sm">
+            {items.map((it) => (
+              <li key={it.href}>
+                <a
+                  href={it.href}
+                  onClick={() => setOpen(false)}
+                  className="block w-full rounded-md px-3 py-2 hover:bg-white/10"
+                >
+                  {it.label}
+                </a>
+              </li>
+            ))}
+            <li>
+              <a
+                href="#get-started"
+                onClick={() => setOpen(false)}
+                className="block w-full text-center rounded-md px-3 py-2 font-semibold bg-[#FFD447] text-[#111111] hover:brightness-95 shadow"
+              >
+                Get Started
+              </a>
+            </li>
+          </ul>
+        </div>
+      )}
+    </header>
+  );
+}
