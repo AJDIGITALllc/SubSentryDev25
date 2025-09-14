@@ -21,9 +21,7 @@ if (!webhookSecret && process.env.NODE_ENV === 'production') {
   throw new Error('Missing required Stripe webhook signing secret: STRIPE_WEBHOOK_SECRET');
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2025-08-27.basil",
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Raw body middleware for Stripe webhooks (must be before JSON parsing)
