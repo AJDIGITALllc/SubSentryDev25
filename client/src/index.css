@@ -1,0 +1,159 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(0 0% 7%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(0 0% 7%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(0 0% 7%);
+  --primary: hsl(208 69% 31%); /* Sentinel Blue #1C4E80 */
+  --primary-foreground: hsl(0 0% 98%);
+  --secondary: hsl(145 52% 47%); /* Guardian Green #3BB273 */
+  --secondary-foreground: hsl(0 0% 98%);
+  --muted: hsl(210 40% 96%);
+  --muted-foreground: hsl(215 13% 50%);
+  --accent: hsl(45 98% 64%); /* Signal Yellow #FFD447 */
+  --accent-foreground: hsl(0 0% 7%);
+  --destructive: hsl(0 84% 60%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(214 32% 91%);
+  --input: hsl(214 32% 91%);
+  --ring: hsl(208 69% 31%);
+  --success: hsl(145 52% 47%);
+  --warning: hsl(45 98% 64%);
+  --chart-1: hsl(208 69% 31%);
+  --chart-2: hsl(145 52% 47%);
+  --chart-3: hsl(45 98% 64%);
+  --chart-4: hsl(0 84% 60%);
+  --chart-5: hsl(262 83% 58%);
+  --sidebar: hsl(0 0% 100%);
+  --sidebar-foreground: hsl(0 0% 7%);
+  --sidebar-primary: hsl(208 69% 31%);
+  --sidebar-primary-foreground: hsl(0 0% 98%);
+  --sidebar-accent: hsl(210 40% 96%);
+  --sidebar-accent-foreground: hsl(208 69% 31%);
+  --sidebar-border: hsl(214 32% 91%);
+  --sidebar-ring: hsl(208 69% 31%);
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --radius: 8px;
+  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0px 1px 3px 0px hsl(0 0% 0% / 0.1), 0px 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow: 0px 1px 3px 0px hsl(0 0% 0% / 0.1), 0px 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow-md: 0px 4px 6px -1px hsl(0 0% 0% / 0.1), 0px 2px 4px -2px hsl(0 0% 0% / 0.1);
+  --shadow-lg: 0px 10px 15px -3px hsl(0 0% 0% / 0.1), 0px 4px 6px -4px hsl(0 0% 0% / 0.1);
+  --shadow-xl: 0px 20px 25px -5px hsl(0 0% 0% / 0.1), 0px 8px 10px -6px hsl(0 0% 0% / 0.1);
+  --shadow-2xl: 0px 25px 50px -12px hsl(0 0% 0% / 0.25);
+}
+
+.dark {
+  --background: hsl(0 0% 0%);
+  --foreground: hsl(0 0% 91%);
+  --card: hsl(228 9% 10%);
+  --card-foreground: hsl(0 0% 85%);
+  --popover: hsl(0 0% 0%);
+  --popover-foreground: hsl(0 0% 91%);
+  --primary: hsl(208 69% 31%);
+  --primary-foreground: hsl(0 0% 98%);
+  --secondary: hsl(145 52% 47%);
+  --secondary-foreground: hsl(0 0% 98%);
+  --muted: hsl(0 0% 9%);
+  --muted-foreground: hsl(210 3% 46%);
+  --accent: hsl(45 98% 64%);
+  --accent-foreground: hsl(0 0% 7%);
+  --destructive: hsl(0 84% 60%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(210 5% 15%);
+  --input: hsl(207 28% 18%);
+  --ring: hsl(208 69% 31%);
+  --success: hsl(145 52% 47%);
+  --warning: hsl(45 98% 64%);
+  --chart-1: hsl(208 69% 31%);
+  --chart-2: hsl(145 52% 47%);
+  --chart-3: hsl(45 98% 64%);
+  --chart-4: hsl(0 84% 60%);
+  --chart-5: hsl(262 83% 58%);
+  --sidebar: hsl(228 9% 10%);
+  --sidebar-foreground: hsl(0 0% 85%);
+  --sidebar-primary: hsl(208 69% 31%);
+  --sidebar-primary-foreground: hsl(0 0% 98%);
+  --sidebar-accent: hsl(0 0% 9%);
+  --sidebar-accent-foreground: hsl(145 52% 47%);
+  --sidebar-border: hsl(210 5% 26%);
+  --sidebar-ring: hsl(208 69% 31%);
+}
+
+.gradient-hero {
+  background: linear-gradient(135deg, hsl(208 69% 31%) 0%, hsl(145 52% 47%) 100%);
+}
+
+.pulse-ring {
+  animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.33);
+  }
+  40%, 50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+}
+
+@layer components {
+  .difficulty-stars {
+    @apply flex space-x-1;
+  }
+
+  .difficulty-star {
+    @apply text-xs;
+  }
+
+  .difficulty-star.filled {
+    @apply text-destructive;
+  }
+
+  .difficulty-star.empty {
+    @apply text-muted-foreground;
+  }
+
+  .success-badge {
+    @apply bg-success/10 text-success px-2 py-1 rounded text-xs font-medium;
+  }
+
+  .warning-badge {
+    @apply bg-warning/10 text-warning px-2 py-1 rounded text-xs font-medium;
+  }
+
+  .danger-badge {
+    @apply bg-destructive/10 text-destructive px-2 py-1 rounded text-xs font-medium;
+  }
+}
