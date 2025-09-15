@@ -20,17 +20,18 @@ A full-stack subscription management and cancellation service built with React, 
 - Successfully debugged and got app running on port 5000
 
 ## GitHub Repository
-**Repository Created**: https://github.com/AJDIGITALllc/subsentry-app
-- Repository name: `subsentry-app`
+**Repository Created**: https://github.com/AJDIGITALllc/SubSentryDev25
+- Repository name: `SubSentryDev25`
 - Description: "AI-powered subscription management and cancellation service"
 - Status: Repository created, code ready for push
 
 ### Manual Git Push Required
 Due to Git security restrictions, the code push needs to be completed manually:
 ```bash
-git remote add origin https://github.com/AJDIGITALllc/subsentry-app.git
+git remote add origin git@github.com:AJDIGITALllc/SubSentryDev25.git
+git branch -M main
 git add .
-git commit -m "Initial commit: Subsentry subscription management app"
+git commit -m "Initial commit: Complete Subsentry app with marketing pages and dashboard"
 git push -u origin main
 ```
 
