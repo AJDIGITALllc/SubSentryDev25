@@ -1,5 +1,6 @@
-import { Shield, Github, Twitter, Linkedin, Mail } from "lucide-react";
+import { Github, Twitter, Linkedin, Mail } from "lucide-react";
 import { Link } from "wouter";
+import subsentryLogo from "@assets/SUBSENTRY WORD LOGO (2)_1757901036549.png";
 
 export default function Footer() {
   return (
@@ -8,11 +9,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                <Shield className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-white">Subsentry</span>
+            <Link href="/" className="flex items-center">
+              <img 
+                src={subsentryLogo} 
+                alt="Subsentry" 
+                className="h-8 w-auto"
+              />
             </Link>
             <p className="text-slate-400 text-sm">
               AI-powered subscription management that saves you money and time. 

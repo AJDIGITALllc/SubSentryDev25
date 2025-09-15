@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Shield, Zap } from "lucide-react";
+import { Menu, X, Zap } from "lucide-react";
 import { Link } from "wouter";
+import subsentryLogo from "@assets/SUBSENTRY WORD LOGO (2)_1757901036549.png";
 
 export default function TopNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,13 +12,13 @@ export default function TopNav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-              <Shield className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-white" data-testid="text-logo">
-              Subsentry
-            </span>
+          <Link href="/" className="flex items-center">
+            <img 
+              src={subsentryLogo} 
+              alt="Subsentry" 
+              className="h-8 w-auto"
+              data-testid="img-logo"
+            />
           </Link>
 
           {/* Desktop Navigation */}
