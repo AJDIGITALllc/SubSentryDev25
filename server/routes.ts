@@ -338,6 +338,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
       const invoices = await storage.getUserInvoices(userId);
+      const paidInvoices = invoices.filter(invoice => invoice.status === 'paid');
       
       // Generate a simple receipt text file
       const receiptContent = `
@@ -346,13 +347,13 @@ SUBSENTRY - RECEIPT
 User: ${user?.email || 'Unknown'}
 Date: ${new Date().toISOString().split('T')[0]}
 
-RECENT TRANSACTIONS
+PAID TRANSACTIONS
 ==================
-${invoices.map(invoice => 
+${paidInvoices.map(invoice =>
   `${invoice.description || 'Task fee'} - $${invoice.amount} (${invoice.status})`
 ).join('\n')}
 
-Total Paid: $${invoices.filter(i => i.status === 'paid').reduce((sum, i) => sum + parseFloat(i.amount), 0).toFixed(2)}
+Total Paid: $${paidInvoices.reduce((sum, i) => sum + parseFloat(i.amount), 0).toFixed(2)}
 
 Thank you for using Subsentry!
       `.trim();
