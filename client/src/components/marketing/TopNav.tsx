@@ -16,7 +16,7 @@ export default function TopNav() {
             <img 
               src={subsentryLogo} 
               alt="Subsentry" 
-              className="h-8 w-auto"
+              className="h-12 w-auto max-w-[200px]"
               data-testid="img-logo"
             />
           </Link>

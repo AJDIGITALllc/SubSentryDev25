@@ -13,7 +13,7 @@ export default function Footer() {
               <img 
                 src={subsentryLogo} 
                 alt="Subsentry" 
-                className="h-8 w-auto"
+                className="h-10 w-auto max-w-[180px]"
               />
             </Link>
             <p className="text-slate-400 text-sm">

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Zap, Shield, Bot, CheckCircle } from "lucide-react";
+import subsentryLogo from "@assets/SUBSENTRY WORD LOGO (2)_1757901036549.png";
 
 export default function Hero() {
   return (
@@ -8,6 +9,14 @@ export default function Hero() {
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
         <div className="text-center space-y-8">
+          <div className="flex justify-center mb-8">
+            <img 
+              src={subsentryLogo} 
+              alt="Subsentry" 
+              className="h-32 w-auto max-w-md"
+            />
+          </div>
+          
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-200 text-sm font-medium mb-6" data-testid="badge-ai-powered">
             <Bot className="w-4 h-4 mr-2" />
             AI-Powered Subscription Management
